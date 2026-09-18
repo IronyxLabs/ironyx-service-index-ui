@@ -1,5 +1,6 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
+	import '@ironyxlabs/design-system/styles';
 
 	let { children } = $props();
 </script>

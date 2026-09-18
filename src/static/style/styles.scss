@@ -1,0 +1,18 @@
+html {
+    background-color: var(--background);
+    color: var(--foreground);
+}
+
+html, 
+body {
+    width: 100%;
+    height: 100%;
+
+    font-family: var(--typography__font_family--sans);
+
+    box-sizing: border-box;
+}
+
+body {
+    padding: var(--spacing--2)
+}
