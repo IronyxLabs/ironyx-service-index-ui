@@ -11,6 +11,9 @@ importers:
       '@ironyxlabs/design-system':
         specifier: ^1.0.0
         version: 1.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+      remixicon:
+        specifier: ^4.9.1
+        version: 4.9.1
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -1060,6 +1063,9 @@ packages:
   readdirp@5.1.1:
     resolution: {integrity: sha512-Kko+Y5XQ6fM+Ce3dq3m9YGxnacYZYl9cA1wZjaF3Vbry2L3i1qVg8+CAgNPsXRArPMUMCaOR7oa9Nqntc43JKA==}
     engines: {node: '>= 20.19.0'}
+
+  remixicon@4.9.1:
+    resolution: {integrity: sha512-36gLSoujkabnCFZFDyP17VNh9piuBA/rsXUb4auSJWLGsHVXtmxLj/EM5FjaEAGnk8oIAj1Azob/DZ2N+90lAQ==}
 
   rolldown@1.2.9:
     resolution: {integrity: sha512-hx/Pv0N1haXRb11qkfnK5MXB/iqr7i0yjWQqmO9uHqZpBgQSqzc8UsSnEpalsh+j1I8qQ2CkXAkJC8Br3dKSlg==}
@@ -2325,6 +2331,8 @@ snapshots:
 
   readdirp@5.1.1:
     optional: true
+
+  remixicon@4.9.1: {}
 
   rolldown@1.2.9:
     dependencies:

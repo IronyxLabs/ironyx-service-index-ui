@@ -9,10 +9,8 @@ body {
     height: 100%;
 
     font-family: var(--typography__font_family--sans);
-
-    box-sizing: border-box;
 }
 
-body {
-    padding: var(--spacing--2)
+* {
+    box-sizing: border-box;    
 }
