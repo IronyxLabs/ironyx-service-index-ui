@@ -11,10 +11,9 @@
 	}
 </script>
 
-<div class="container" active={isActive()}>
+<div class="container" active={isActive()} onclick={() => goto(path)}>
 	<i class="{icon} icon"></i>
-	// eslint-disable-next-line svelte/no-navigation-without-resolve
-	<span class="heading--h3" onclick={() => goto(path)}>{label}</span>
+	<span class="heading--h3">{label}</span>
 </div>
 
 <style lang="scss">
