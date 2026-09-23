@@ -2,15 +2,8 @@
 	import Counter from "$lib/components/counter.svelte";
 	import { CounterVariant } from "$lib/models/counter-variant";
 	import type { Overview } from "$lib/models/overview";
-	import { OverviewDataService } from "$lib/services/overview.data-service";
 
-	let overview: Overview | undefined = $state();
-
-	async function loadAsync() {
-	  overview = await new OverviewDataService().getAsync()
-	}
-
-	loadAsync();
+	let { data }: { data: { overview: Overview } } = $props();
 </script>
 <div class="container">
 	<div class="page__header">
@@ -25,10 +18,10 @@
 	</div>
 
 	<div class="counters">
-	    <Counter label="Services" value={overview?.serviceCount ?? 0} variant={CounterVariant.Services}></Counter>
-	    <Counter label="Healthy" value={overview?.healthyCount ?? 0} variant={CounterVariant.Healthy}></Counter>  
-	    <Counter label="Degraded" value={overview?.degradedCount ?? 0} variant={CounterVariant.Degraded}></Counter>  
-	    <Counter label="Unhealthy" value={overview?.unhealthyCount ?? 0} variant={CounterVariant.Unhealthy}></Counter>  
+	    <Counter label="Services" value={data.overview?.serviceCount ?? 0} variant={CounterVariant.Services}></Counter>
+	    <Counter label="Healthy" value={data.overview?.healthyCount ?? 0} variant={CounterVariant.Healthy}></Counter>  
+	    <Counter label="Degraded" value={data.overview?.degradedCount ?? 0} variant={CounterVariant.Degraded}></Counter>  
+	    <Counter label="Unhealthy" value={data.overview?.unhealthyCount ?? 0} variant={CounterVariant.Unhealthy}></Counter>  
 	</div>
 
 	<div class="status">
@@ -37,7 +30,7 @@
 			<span class="status__subtitle body__small">Current status accross all services</span>
 		</div>
 
-		<div class="status__bar" style="grid-template-columns: {overview?.healthyCount ?? 0}fr {overview?.degradedCount ?? 0}fr {overview?.unhealthyCount ?? 0}fr;">
+		<div class="status__bar" style="grid-template-columns: {data.overview?.healthyCount ?? 0}fr {data.overview?.degradedCount ?? 0}fr {data.overview?.unhealthyCount ?? 0}fr;">
 		    <div class="status__bar--healthy"></div>
 		    <div class="status__bar--degraded"></div>
 		    <div class="status__bar--unhealthy"></div>						
