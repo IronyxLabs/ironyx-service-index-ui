@@ -1,37 +1,99 @@
+<script lang="ts">
+	import { loaderStore } from "$lib/services/loader.store";
+	import type { Snippet } from "svelte";
+	import { render } from "svelte/server";
+
+    let { key = '', children }: { key: string, children: Snippet<[]> } = $props();
+</script>
+
 <style lang="scss">
     .loader {
-      width: 50px;
-      aspect-ratio: 1;
-      display: grid;
+      --color-1: #fff;
+      --color-2: #ff3d00;
+      --size: 1px;
+    
+      transform: rotateZ(45deg);
+      perspective: calc(1000 * var(--size));
+      border-radius: 50%;
+      width: calc(48 * var(--size));
+      height: calc(48 * var(--size));
+      color: var(--color-1);
     }
-    .loader::before,
-    .loader::after {    
-      content:"";
-      grid-area: 1/1;
-      --c:no-repeat radial-gradient(farthest-side,var(--color__primary--600) 92%,#0000);
-      background: 
-        var(--c) 50%  0, 
-        var(--c) 50%  100%, 
-        var(--c) 100% 50%, 
-        var(--c) 0    50%;
-      background-size: 12px 12px;
-      animation: l12 1s infinite;
+    .loader:before,
+    .loader:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: inherit;
+      height: inherit;
+      border-radius: 50%;
+      transform: rotateX(70deg);
+      animation: 1s spin linear infinite;
     }
-    .loader::before {
-      margin: 4px;
-      filter: hue-rotate(45deg);
-      background-size: 8px 8px;
-      animation-timing-function: linear
+    .loader:after {
+      color: var(--color-2);
+      transform: rotateY(70deg);
+      animation-delay: 0.4s;
     }
     
-    @keyframes l12 { 
-      100%{transform: rotate(.5turn)}
+    @keyframes rotate {
+      0% {
+        transform: translate(-50%, -50%) rotateZ(0deg);
+      }
+      100% {
+        transform: translate(-50%, -50%) rotateZ(360deg);
+      }
+    }
+    
+    @keyframes rotateccw {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      100% {
+        transform: translate(-50%, -50%) rotate(-360deg);
+      }
+    }
+    
+    @keyframes spin {
+      0%,
+      100% {
+        box-shadow: 0.2em 0 0 0 currentcolor;
+      }
+      12% {
+        box-shadow: 0.2em 0.2em 0 0 currentcolor;
+      }
+      25% {
+        box-shadow: 0 0.2em 0 0 currentcolor;
+      }
+      37% {
+        box-shadow: -0.2em 0.2em 0 0 currentcolor;
+      }
+      50% {
+        box-shadow: -0.2em 0 0 0 currentcolor;
+      }
+      62% {
+        box-shadow: -0.2em -0.2em 0 0 currentcolor;
+      }
+      75% {
+        box-shadow: 0 -0.2em 0 0 currentcolor;
+      }
+      87% {
+        box-shadow: 0.2em -0.2em 0 0 currentcolor;
+      }
     }
 
     div {
         align-self: center;
         justify-self: center;
+
+        z-index: 9999;
     }
 </style>
 
-<div class="loader"></div>
+{#if loaderStore.shown(key)}
+    <div class="loader"></div>	
+{:else}
+    {@render children()}
+{/if}

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { CounterVariant } from "$lib/models/counter-variant";
-	import { loaderService } from "$lib/services/loader.service.svelte";
 	import Spinner from "./spinner.svelte";
 
     let { label, value, variant }: { label: string, value: number, variant: CounterVariant } = $props();
@@ -32,7 +31,7 @@
         }
 
         &.value--services {
-            color: var(--foreground--primary);
+            color: var(--foreground);
         }
         
         &.value--healthy {
@@ -51,9 +50,7 @@
 
 <div class="container">
     <span class="label__large label">{label}</span>
-    {#if loaderService.loading}
-        <Spinner></Spinner>
-    {:else}
-        <span class="display__large value value--{variant}">{value}</span>
-    {/if}
+    <Spinner key="overview">
+        <span class="display__large value value--{variant}">{value}</span>        
+    </Spinner>
 </div>

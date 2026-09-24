@@ -1,12 +1,12 @@
-export class LoaderService {
-  public loading: boolean = $state(false);
+import { loaderStore } from "./loader.store";
 
-  public show() {
-    this.loading = true;
+export class LoaderService {
+  public show(key: string = '') {
+    loaderStore.show(key);
   }
 
-  public hide() {
-    this.loading = false;
+  public hide(key: string = '') {
+    loaderStore.hide(key);
   }
 }
 

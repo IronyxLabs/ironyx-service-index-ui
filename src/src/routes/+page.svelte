@@ -1,13 +1,18 @@
 <script lang="ts">
 	import Counter from "$lib/components/counter.svelte";
+	import LoadingBar from "$lib/components/loading-bar.svelte";
+	import SiEvent from "$lib/components/si-event.svelte";
 	import { CounterVariant } from "$lib/models/counter-variant";
+	import type { EventEntry } from "$lib/models/event";
 	import type { Overview } from "$lib/models/overview";
+	import { IxCard } from "@ironyxlabs/design-system";
 
-	let { data }: { data: { overview: Overview } } = $props();
+	let { data }: { data: { overview: Overview, entries: EventEntry[] } } = $props();
 </script>
+
 <div class="container">
 	<div class="page__header">
-		<div class="page__title">
+		<div class="section__header">
 			<span class="heading__h1">Overview</span>
 			<span class="heading__h4 page__subtitle">Your services at a glance</span>
 		</div>
@@ -24,25 +29,45 @@
 	    <Counter label="Unhealthy" value={data.overview?.unhealthyCount ?? 0} variant={CounterVariant.Unhealthy}></Counter>  
 	</div>
 
-	<div class="status">
-	    <div class="status__header">
-			<span class="status__title header__h4">Service Health</span>
-			<span class="status__subtitle body__small">Current status accross all services</span>
-		</div>
+	<IxCard>	
+       	<div class="status">
+       	    <div class="section__header">
+     			<span class="status__title header__h4">Service Health</span>
+     			<span class="status__subtitle body__small">Current status accross all services</span>
+      		</div>
+        
+       	    <LoadingBar key='overview'>
+                   	<div class="status__bar" style="grid-template-columns: {data.overview?.healthyCount ?? 0}fr {data.overview?.degradedCount ?? 0}fr {data.overview?.unhealthyCount ?? 0}fr {data.overview!.serviceCount - data.overview!.healthyCount - data.overview!.degradedCount - data.overview!.unhealthyCount}fr;">
+                   	    <div class="status__bar--healthy"></div>
+                   	    <div class="status__bar--degraded"></div>
+                   	    <div class="status__bar--unhealthy"></div>						
+                   	    <div class="status__bar--unknown"></div>
+                   	</div>
+      		</LoadingBar>
+       	</div>
+	</IxCard>
 
-		<div class="status__bar" style="grid-template-columns: {data.overview?.healthyCount ?? 0}fr {data.overview?.degradedCount ?? 0}fr {data.overview?.unhealthyCount ?? 0}fr;">
-		    <div class="status__bar--healthy"></div>
-		    <div class="status__bar--degraded"></div>
-		    <div class="status__bar--unhealthy"></div>						
-		</div>
-	</div>
+	<IxCard>
+    	<div class="events">
+    	    <div class="section__header">
+                <span class="status__title header__h4">Needs Attention</span>
+                <span class="status__subtitle body__small">Events that needs your attention</span>
+    		</div>
+
+            <div class="entries">
+                {#each data.entries as entry (entry) }
+                    <SiEvent entry={entry}></SiEvent>	
+                {/each}                
+            </div>
+    	</div>	
+	</IxCard>
 </div>
 
 <style lang="less">
 	div {
 		&.container {
 			display: grid;
-			grid-template-rows: auto 250px 1fr;
+			grid-template-rows: auto 180px 1fr;
 
 			grid-row-gap: var(--spacing--6);
 		}
@@ -59,16 +84,9 @@
 		    display: grid;
 			grid-template-rows: auto auto;
 			grid-row-gap: var(--spacing--6);
-
-			border-color: var(--border);
-			border-width: var(--border__width--thin);
-			border-style: solid;
-			border-radius: var(--border__radius--lg);
-
-			padding: var(--spacing--4);
 		}
 
-		&.status__header {
+		&.section__header {
 		    display: grid;
 			grid-template-rows: auto auto;
 		}
@@ -100,6 +118,26 @@
 		    height: 100%;
 
 			background-color: var(--status__foreground--error);
+		}
+		
+		&.status__bar--unknown {
+		    height: 100%;
+
+			background-color: var(--foreground);
+		}
+
+		&.events {
+		    height: 100%;
+		
+		    display: grid;
+			grid-template-rows: auto 1fr;
+			grid-row-gap: var(--spacing--6);
+		}
+
+		&.entries {
+		    display: grid;
+			grid-auto-rows: auto;
+			grid-row-gap: var(--spacing--2);
 		}
 	}
 
